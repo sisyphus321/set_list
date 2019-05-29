@@ -56,13 +56,25 @@ def song_idx(dbh, t_song):
     else:
         return None
 
-def arr_idx( dbh, song_idx ):
+def arr_idx(dbh, song_idx):
     arr_query = 'SELECT argmnt_idx FROM arrangements WHERE song_idx = ?'
     # print('***** song_idx = ', song_idx )
     dbh.execute(arr_query, (song_idx,))
     arr_index = dbh.fetchone()
-    return arr_index
+    if arr_index:
+        return arr_index[0]
+    else:
+        return None
 
+def arr_path(dbh, song_idx):
+    arr_query = 'SELECT argmnt_idx, filepath FROM arrangements WHERE song_idx = ?'
+    dbh.execute(arr_query, (song_idx,))
+    arr_data = dbh.fetchall()
+    if arr_data:
+        return arr_data[0]
+    else:
+        return None
+    
 #logging.basicConfig(level=logging.DEBUG)    
 logging.basicConfig(level=logging.INFO)
 
@@ -89,10 +101,22 @@ html_file.write('{}<body>\n'.format(' '*2))
 html_file.write('{}<table>\n'.format(' '*2))
 
 for song in song_list:
-    html_file.write('{}<tr>\n'.format(' '*4))
-    html_file.write('{}<td><a href="">{}</a></td>\n'.format(' '*6, song))
-    html_file.write('{}</tr>\n'.format(' '*4))
     song_index = song_idx(mc, song)
+    if song_index:
+        songdata = arr_path(mc, song_index)
+        if songdata:
+            songpath = 'file://c:/Users/sisyp/Documents/SONA/' + songdata[1]
+        else:
+            songpath = ''
+            print('no path for {} (song_index = {})'.format(song, song_index))
+        
+    else:
+        print('no info for {}'.format(song))
+        songpath = ''
+
+    html_file.write('{}<tr>\n'.format(' '*4))
+    html_file.write('{}<td><a href="{}">{}</a></td>\n'.format(' '*6, songpath, song))
+    html_file.write('{}</tr>\n'.format(' '*4))
     logging.info('%s: index = %s', song, song_index)
     
 html_file.write('{}</table>\n'.format(' '*2))
