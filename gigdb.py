@@ -1,4 +1,4 @@
-import sqlite3
+
 
 def read_gig_file( gig_file ):
     gig_fh = open( gig_file, 'r' )
