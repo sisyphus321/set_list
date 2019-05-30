@@ -2,7 +2,7 @@ import os
 import sqlite3
 import logging
  
- 
+gig_name = 'Mooseheart Lodge, June 8, 2019'
 song_list = ["Can't Win for Losing You",
 "Messin With the Kid",
 "Hey Hey What Can I Do",
@@ -42,6 +42,25 @@ def print_head(file_obj, headstring):
     file_obj.write('{}<head>\n'.format(' '*2))
     file_obj.write('{}<h2>{}</h2>\n'.format(' '*4, headstring))
     file_obj.write('{}</head>\n'.format(' '*2))
+    
+def body_color_script(file_obj):
+    file_obj.write("""        <script>
+            let last_bg_color = "Chartreuse";
+            window.onload = setbg;
+            setInterval( setbg, 7000 )
+      
+            function setbg(){
+                if( last_bg_color == "Chartreuse"){
+                    last_bg_color = "DeepSkyBlue";
+            }
+            else{
+                last_bg_color = "Chartreuse";
+            }
+            document.body.style.backgroundColor = last_bg_color;        
+        }
+        </script>
+        """)
+    
 
 def song_idx(dbh, t_song):
     alias_query = 'SELECT song_idx FROM title_aliases WHERE alias_title = ? COLLATE NOCASE'
@@ -96,8 +115,9 @@ html_file = open('test.html', 'w')
 html_file.write('<!DOCTYPE HTML>\n')
 html_file.write('<html>\n')
 html_file.write('{}<font size="6">\n'.format(' '*2))
-print_head(html_file, 'this is the head')
+print_head(html_file, gig_name)
 html_file.write('{}<body>\n'.format(' '*2))
+body_color_script(html_file)
 html_file.write('{}<table>\n'.format(' '*2))
 
 for song in song_list:
