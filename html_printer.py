@@ -34,9 +34,14 @@ song_list = ["Can't Win for Losing You",
 "I'll Fight",
 "Tonight I'm staying",
 "Pastor's Wife",
-
 "Sunny Afternoon",
-"Dear Mr. Fantasy" ]
+"Dear Mr. Fantasy",
+"The Weight",
+"Lodi",
+"Pyramid of Cans",
+"Down by the Water",
+"East Lombard Girl"
+ ]
 
 def print_head(file_obj, headstring):
     file_obj.write('{}<head>\n'.format(' '*2))
