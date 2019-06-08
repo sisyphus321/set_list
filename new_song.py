@@ -1,5 +1,6 @@
-import sqlite3
+import sys
 import platform
+import sqlite3
 
 def new_song_import(ns):
     insert_song_cmd  = 'INSERT INTO song_table (song_title) VALUES (?)'
@@ -26,5 +27,11 @@ def new_song_import(ns):
     mdbh.close()
 
 if __name__ == "__main__":
-    new_song = input('new song cannonical name> ')
-    new_song_import( new_song )
+    if len(sys.argv) == 1:
+        new_song = input('new song cannonical name> ')
+        new_song_import(new_song)
+    else:
+        songsf = open(sys.argv[1])
+        for songio in songsf:
+            song = songio.rstrip()
+            print(song)
